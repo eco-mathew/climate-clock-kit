@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 #import math
+import json
 import os
 import sys
 import time
@@ -16,7 +17,7 @@ import RPi.GPIO as g
 STATE = 0
 
 # TODO: Pull these from the network
-#JSON = 'https://raw.githubusercontent.com/beautifultrouble/climate-clock-widget/master/src/clock.json'
+JSON = 'https://raw.githubusercontent.com/beautifultrouble/climate-clock-widget/master/src/clock.json'
 SECONDS_PER_YEAR = 365.25 * 24 * 3600
 CARBON_DEADLINE = datetime.fromisoformat("2029-07-22T16:00:03+00:00")
 
