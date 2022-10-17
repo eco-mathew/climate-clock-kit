@@ -1,33 +1,28 @@
 #!/usr/bin/env python3
 
-import json
+#import math
 import os
 import sys
 import time
 from datetime import datetime, timezone
 
 import config
-import requests
 from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
 from relativedelta import relativedelta
 
 #GPIO INPUT/OUTPUT settings
 import RPi.GPIO as g
 
-TIME_COLOR = '#42e3a2'
-TIME_ALT_COLOR = '#0db593'
-BUDGET_COLOR = '#ff3838'
-BUDGET_ALT_COLOR = '#e60082'
 STATE = 0
 
 # TODO: Pull these from the network
-JSON = 'https://raw.githubusercontent.com/beautifultrouble/climate-clock-widget/master/src/clock.json'
+#JSON = 'https://raw.githubusercontent.com/beautifultrouble/climate-clock-widget/master/src/clock.json'
 SECONDS_PER_YEAR = 365.25 * 24 * 3600
 CARBON_DEADLINE = datetime.fromisoformat("2029-07-22T16:00:03+00:00")
 
 RENEWABLES = {
     "initial": 11.4,
-    "timestamp": datetime.fromisoformat("2022-11-05T00:00:00:+00:00"),
+    "timestamp": datetime.fromisoformat("2022-11-05T00:00:00+00:00"),
     "rate": 2.0428359571070087e-08,
 }
 
@@ -38,7 +33,7 @@ def carbon_deadline():
     return relativedelta(CARBON_DEADLINE, datetime.now(timezone.utc))
 
 def renewables():
-    t = (datetime.now(timezone.utc) - RENEWABLE["timestamp"]).total_seconds()
+    t = (datetime.now(timezone.utc) - RENEWABLES["timestamp"]).total_seconds()
     return RENEWABLES["rate"]*t + RENEWABLES["initial"]
 
 
@@ -67,6 +62,8 @@ def run(options):
     yellow = hex2color("#ffd919")
     
     while not time.sleep(.05):
+        canvas.Clear()
+
         #deadline
         now = datetime.now(timezone.utc)
 
@@ -78,8 +75,6 @@ def run(options):
         minutes = deadline_delta.minutes
         seconds = deadline_delta.seconds
         cs = deadline_delta.microseconds // 10000
-        
-        canvas.Clear()
 
         deadline = [
             [f1, yellow, 1, f"{years:1.0f}"],
@@ -89,7 +84,7 @@ def run(options):
         ]
         c_string = [
             f"{'STOP AT'}",
-            f"{1.5`C'}",
+            f"{'1.5`C'}",
         ]
         
         #lineline
@@ -102,13 +97,14 @@ def run(options):
             [f1, yellow, 0, (":", " ")[cs < 50]],
             [f1, yellow, 0, f"{seconds:02.0f}"],
         ]
+
         if seconds < 55:
             x = 1
             for font, color, space, string in deadline:
-                x += space + graphics.DrawTet(canvas, font, x, L1, color, string)
+                x += space + graphics.DrawText(canvas, font, x, L1, color, string)
             x = 8
             for font, color, space, string in deadline:
-                x += space + graphics.DrawTet(canvas, font, x, L2, color, string)
+                x += space + graphics.DrawText(canvas, font, x, L2, color, string)
             canvas = matrix.SwapOnVSync(canvas)
         else:
             graphics.DrawText(canvas, f3, 5, 15, red, c_string[0])
