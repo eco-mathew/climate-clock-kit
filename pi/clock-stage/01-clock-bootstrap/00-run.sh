@@ -44,7 +44,7 @@ on_chroot << EOF
     cd "/home/${FIRST_USER_NAME}"
 
     # Pull the climate-clock-kit repo and modify the shebang for a virtualenv
-    [ -d climate-clock-kit ] || git clone https://github.com/beautifultrouble/climate-clock-kit
+    [ -d climate-clock-kit ] || git clone https://github.com/eco-mathew/climate-clock-kit
     ln -sf climate-clock-kit/clock/climateclock.py
 
     # Build the matrix library
