@@ -15,10 +15,10 @@ from relativedelta import relativedelta
 SECONDS_PER_YEAR = 365.25 * 24 * 3600
 
 # Snapshot of API data (the Good Stuff™)
-CARBON_DEADLINE_1 = datetime.fromisoformat("2028-01-01T12:00:00+00:00")
+CARBON_DEADLINE_1 = datetime.fromisoformat("2029-07-22T16:00:03+00:00")
 RENEWABLES_1 = {
     "initial": 11.4,
-    "timestamp": datetime.fromisoformat("2020-01-01T00:00:00+00:00"),
+    "timestamp": datetime.fromisoformat("2022-11-05T00:00:00+00:00"),
     "rate": 2.0428359571070087e-08,
 }
 
@@ -43,16 +43,19 @@ def run(options):
     canvas = matrix.CreateFrameCanvas()
 
     f1 = graphics.Font()
-    f1.LoadFont(relpath("10x20.bdf"))
+    f1.LoadFont(relpath("6x13B.bdf"))
     f2 = graphics.Font()
     f2.LoadFont(relpath("6x13.bdf"))
     f3 = graphics.Font()
-    f3.LoadFont(relpath("8x13.bdf"))
-    L1 = 15
-    L2 = 30
+    f3.LoadFont(relpath("8x13B.bdf"))
+    L1 = 13
+    L2 = 27
 
     red = hex2color("#ff0000")
     green = hex2color("#00ff00")
+
+    alt_yellow = hex2color("#c8890a")
+    yellow = hex2color("#ffd919")
 
     while not time.sleep(0.05):
         canvas.Clear()
@@ -76,35 +79,39 @@ def run(options):
         cs = deadline_delta.microseconds // 10000
 
         deadline = [
-            [f1, red, 1, f"{years:1.0f}"],
-            [f3, red, 1, "YEAR " if years == 1 else "YEARS"],
-            [f1, red, 1, f"{days:03.0f}"],
-            [f3, red, 1, "DAY " if days == 1 else "DAYS"],
-            [f1, red, -2, f"{hours:02.0f}"],
-            [f1, red, -1, (":", " ")[cs < 50]],
-            [f1, red, -2, f"{minutes:02.0f}"],
-            [f1, red, -1, (":", " ")[cs < 50]],
-            [f1, red, 0, f"{seconds:02.0f}"],
+            [f1, yellow, 1, f"{years:1.0f}"],
+            [f1, alt_yellow, 1, "YEAR " if years == 1 else "YRS"],
+            [f1, yellow, 1, f"{days:03.0f}"],
+            [f1, alt_yellow, 1, "DAY " if days == 1 else "DAYS"],
         ]
-
-        x = 1
-        for font, color, space, string in deadline:
-            x += space + graphics.DrawText(canvas, font, x, L1, color, string)
+        c_string = [
+            f"{'STOP AT'}",
+            f"{'1.5`C'}",
+        ]
 
         # Lifeline
         r1 = renewables_1()
         lifeline = [
-            [f1, green, -2, f"{r1:.0f}"],
-            [f1, green, -2, f"."],
-            [f1, green, 3, f"{format(r1, '.9f').split('.')[1]}%"],
-            [f2, green, 0, "RENEWABLES"],
+            [f1, yellow, 0, f"{hours:02.0f}"],
+            [f1, yellow, 0, (":", " ")[cs < 50]],
+            [f1, yellow, 0, f"{minutes:02.0f}"],
+            [f1, yellow, 0, (":", " ")[cs < 50]],
+            [f1, yellow, 0, f"{seconds:02.0f}"],
         ]
 
-        x = 1
-        for font, color, space, string in lifeline:
-            x += space + graphics.DrawText(canvas, font, x, L2, color, string)
-
-        canvas = matrix.SwapOnVSync(canvas)
+        if seconds < 55:
+            x = 1
+            for font, color, space, string in deadline:
+                x += space + graphics.DrawText(canvas, font, x, L1, color, string)
+            x = 1
+            for font, color, space, string in lifeline:
+                x += space + graphics.DrawText(canvas, font, x, L2, color, string)
+8
+            canvas = matrix.SwapOnVSync(canvas)
+        else:
+            graphics.DrawText(canvas, f3, 5, 15, red, c_string[0])
+            graphics.DrawText(canvas, f3, 20, 27, green, c_string[1])
+            canvas = matrix.SwapOnVSync(canvas)           
 
 
 options = RGBMatrixOptions()
