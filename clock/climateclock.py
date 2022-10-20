@@ -84,10 +84,6 @@ def run(options):
             [f1, yellow, 1, f"{days:03.0f}"],
             [f1, alt_yellow, 1, "DAY " if days == 1 else "DAYS"],
         ]
-        c_string = [
-            f"{'STOP AT'}",
-            f"{'1.5`C'}",
-        ]
 
         # Lifeline
         r1 = renewables_1()
@@ -99,24 +95,18 @@ def run(options):
             [f1, yellow, 0, f"{seconds:02.0f}"],
         ]
 
-        if seconds < 55:
-            x = 1
-            for font, color, space, string in deadline:
-                x += space + graphics.DrawText(canvas, font, x, L1, color, string)
-            x = 1
-            for font, color, space, string in lifeline:
-                x += space + graphics.DrawText(canvas, font, x, L2, color, string)
-8
-            canvas = matrix.SwapOnVSync(canvas)
-        else:
-            graphics.DrawText(canvas, f3, 5, 15, red, c_string[0])
-            graphics.DrawText(canvas, f3, 20, 27, green, c_string[1])
-            canvas = matrix.SwapOnVSync(canvas)           
+        x = 1
+        for font, color, space, string in deadline:
+            x += space + graphics.DrawText(canvas, font, x, L1, color, string)
+        x = 8
+        for font, color, space, string in lifeline:
+            x += space + graphics.DrawText(canvas, font, x, L2, color, string)
 
+        
 
 options = RGBMatrixOptions()
 for key, value in vars(config).items():
-    if not key.startswith("__"):
+    if not key.startswith('__'):
         setattr(options, key, value)
 
 
