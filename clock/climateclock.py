@@ -101,9 +101,9 @@ def run(options):
         x = 8
         for font, color, space, string in lifeline:
             x += space + graphics.DrawText(canvas, font, x, L2, color, string)
+        canvas = matrix.SwapOnVSync(canvas)    
 
         
-
 options = RGBMatrixOptions()
 for key, value in vars(config).items():
     if not key.startswith('__'):
