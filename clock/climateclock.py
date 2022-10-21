@@ -11,7 +11,7 @@ from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
 # Pulled from dateutil without all the dependencies
 from relativedelta import relativedelta
 
-import RPi.GPIO as g
+#import RPi.GPIO as g
 
 SECONDS_PER_YEAR = 365.25 * 24 * 3600
 
@@ -126,7 +126,6 @@ def run(options):
             [f1, alt_yellow, 1, ". "],
         ]
 
-        # Lifeline
         current_time = [
             [f3, yellow, 0, f"{current_hour}"],
             [f3, alt_yellow, 0, (":", " ")[current_cs < 50]],
