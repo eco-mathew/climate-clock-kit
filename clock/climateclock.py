@@ -46,11 +46,11 @@ def button_callback(channel):
 
 def run(options):
     #GPIO setting
-    g.setwarnings(False)
-    g.setmode(g.BCM)
-    g.setup(25, g.IN, pull_up_down=g.PUD_UP)
+    #g.setwarnings(False)
+    #g.setmode(g.BCM)
+    #g.setup(25, g.IN, pull_up_down=g.PUD_UP)
 
-    g.add_event_detect(25, g.RISING, callback=button_callback, bouncetime=200)
+    #g.add_event_detect(25, g.RISING, callback=button_callback, bouncetime=200)
 
     matrix = RGBMatrix(options=options)
     canvas = matrix.CreateFrameCanvas()
