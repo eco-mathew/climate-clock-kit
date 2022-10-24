@@ -64,9 +64,6 @@ def run(options):
     L1 = 13
     L2 = 27
 
-    red = hex2color("#ff0000")
-    green = hex2color("#00ff00")
-
     alt_yellow = hex2color("#c8890a")
     yellow = hex2color("#ffd919")
 
@@ -91,6 +88,15 @@ def run(options):
         seconds = deadline_delta.seconds
         cs = deadline_delta.microseconds // 10000
 
+        #save current time data
+        current_year = now.year
+        current_month = now.month
+        current_day = now.day
+        current_hour = now.hour
+        current_minute = now.minute
+        current_second = now.second
+        current_cs = now.microsecond // 10000
+
         deadline = [
             [f1, yellow, 1, f"{years:1.0f}"],
             [f2, alt_yellow, 1, "YEAR " if years == 1 else "YRS"],
@@ -108,22 +114,13 @@ def run(options):
             [f1, yellow, 0, f"{seconds:02.0f}"],
         ]
 
-        #display current time
-        current_year = now.year
-        current_month = now.month
-        current_day = now.day
-        current_hour = now.hour
-        current_minute = now.minute
-        current_second = now.second
-        current_cs = now.microsecond // 10000
-
         current_date = [
             [f1, yellow, 1, f"{current_year}"],
             [f1, alt_yellow, 1, ". "],
             [f1, yellow, 1, f"{current_month}"],
             [f1, alt_yellow, 1, ". "],
             [f1, yellow, 1, f"{current_day}"],
-            [f1, alt_yellow, 1, ". "],
+            [f1, alt_yellow, 1, "."],
         ]
 
         current_time = [
