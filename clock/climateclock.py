@@ -11,7 +11,7 @@ from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
 # Pulled from dateutil without all the dependencies
 from relativedelta import relativedelta
 
-#import RPi.GPIO as g
+import RPi.GPIO as g
 
 SECONDS_PER_YEAR = 365.25 * 24 * 3600
 
@@ -46,11 +46,11 @@ def button_callback(channel):
 
 def run(options):
     #GPIO setting
-    #g.setwarnings(False)
-    #g.setmode(g.BCM)
-    #g.setup(25, g.IN, pull_up_down=g.PUD_UP)
+    g.setwarnings(False)
+    g.setmode(g.BCM)
+    g.setup(25, g.IN, pull_up_down=g.PUD_UP)
 
-    #g.add_event_detect(25, g.RISING, callback=button_callback, bouncetime=200)
+    g.add_event_detect(25, g.RISING, callback=button_callback, bouncetime=200)
 
     matrix = RGBMatrix(options=options)
     canvas = matrix.CreateFrameCanvas()
@@ -63,8 +63,10 @@ def run(options):
     f3.LoadFont(relpath("8x13B.bdf"))
     L1 = 13
     L2 = 27
+    L3 = 9
+    L4 = 30
 
-    alt_yellow = hex2color("#c8890a")
+    alt_yellow = hex2color("#b55507")
     yellow = hex2color("#ffd919")
 
     while not time.sleep(0.05):
@@ -140,12 +142,12 @@ def run(options):
                 x += space + graphics.DrawText(canvas, font, x, L2, color, string)
             canvas = matrix.SwapOnVSync(canvas)
         else:
-            x = 1
+            x = 5
             for font, color, space, string in current_date:
-                x += space + graphics.DrawText(canvas, font, x, L1, color, string)
-            x = 1
+                x += space + graphics.DrawText(canvas, font, x, L3, color, string)
+            x = 0
             for font, color, space, string in current_time:
-                x += space + graphics.DrawText(canvas, font, x, L2, color, string)
+                x += space + graphics.DrawText(canvas, font, x, L4, color, string)
             canvas = matrix.SwapOnVSync(canvas)
 
 
