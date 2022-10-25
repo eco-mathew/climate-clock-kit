@@ -4,14 +4,13 @@ import os
 import sys
 import time
 from datetime import datetime, timezone
+import RPi.GPIO as g
 
 import config
 from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
 
 # Pulled from dateutil without all the dependencies
 from relativedelta import relativedelta
-
-import RPi.GPIO as g
 
 SECONDS_PER_YEAR = 365.25 * 24 * 3600
 
@@ -34,7 +33,6 @@ clock_display = False
 def carbon_deadline_1():
     return relativedelta(CARBON_DEADLINE_1, datetime.now(timezone.utc))
 
-
 def renewables_1():
     t = (datetime.now(timezone.utc) - RENEWABLES_1["timestamp"]).total_seconds()
     return RENEWABLES_1["rate"] * t + RENEWABLES_1["initial"]
@@ -42,7 +40,6 @@ def renewables_1():
 def button_callback(channel):
     global clock_display
     clock_display = not clock_display
-
 
 def run(options):
     #GPIO setting
@@ -64,7 +61,6 @@ def run(options):
     L1 = 13
     L2 = 27
     L3 = 9
-    L4 = 30
 
     alt_yellow = hex2color("#b55507")
     yellow = hex2color("#ffd919")
@@ -107,7 +103,6 @@ def run(options):
         ]
 
         # Lifeline
-        r1 = renewables_1()
         lifeline = [
             [f1, yellow, 0, f"{hours:02.0f}"],
             [f1, alt_yellow, 0, (":", " ")[cs < 50]],
@@ -126,11 +121,11 @@ def run(options):
         ]
 
         current_time = [
-            [f3, yellow, 0, f"{current_hour}"],
+            [f3, yellow, 0, f"{current_hour:02.0f}"],
             [f3, alt_yellow, 0, (":", " ")[current_cs < 50]],
-            [f3, yellow, 0, f"{current_minute}"],
+            [f3, yellow, 0, f"{current_minute:02.0f}"],
             [f3, alt_yellow, 0, (":", " ")[current_cs < 50]],
-            [f3, yellow, 0, f"{current_second}"],
+            [f3, yellow, 0, f"{current_second:02.0f}"],
         ]   
 
         if clock_display == False:
@@ -142,12 +137,12 @@ def run(options):
                 x += space + graphics.DrawText(canvas, font, x, L2, color, string)
             canvas = matrix.SwapOnVSync(canvas)
         else:
-            x = 5
+            x = 3
             for font, color, space, string in current_date:
                 x += space + graphics.DrawText(canvas, font, x, L3, color, string)
             x = 0
             for font, color, space, string in current_time:
-                x += space + graphics.DrawText(canvas, font, x, L4, color, string)
+                x += space + graphics.DrawText(canvas, font, x, L2, color, string)
             canvas = matrix.SwapOnVSync(canvas)
 
 
