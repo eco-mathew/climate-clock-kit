@@ -15,7 +15,7 @@ from relativedelta import relativedelta
 SECONDS_PER_YEAR = 365.25 * 24 * 3600
 
 # Snapshot of API data (the Good Stuff™)
-CARBON_DEADLINE_1 = datetime.fromisoformat("2028-01-01T12:00:00+00:00")
+CARBON_DEADLINE_1 = datetime.fromisoformat("2029-07-22T16:00:03+00:00")
 RENEWABLES_1 = {
     "initial": 11.4,
     "timestamp": datetime.fromisoformat("2022-01-01T00:00:00+00:00"),
@@ -112,12 +112,12 @@ def run(options):
         ]
 
         current_date = [
-            [f1, yellow, 1, f"{current_year}"],
-            [f1, alt_yellow, 1, ". "],
-            [f1, yellow, 1, f"{current_month}"],
-            [f1, alt_yellow, 1, ". "],
-            [f1, yellow, 1, f"{current_day}"],
-            [f1, alt_yellow, 1, "."],
+            [f2, yellow, 1, f"{current_year}"],
+            [f2, alt_yellow, 1, "."],
+            [f2, yellow, 1, f"{current_month}"],
+            [f2, alt_yellow, 1, "."],
+            [f2, yellow, 1, f"{current_day}"],
+            [f2, alt_yellow, 1, "."],
         ]
 
         current_time = [
